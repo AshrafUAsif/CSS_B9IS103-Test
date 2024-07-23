@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style type="text/css">
+        .typing-indicator {
+            font-style: italic;
+            color: grey;
+            padding: 5px;
+            height: 20px;
+        }
+
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+            padding: 10px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, bottom 0.5s ease-in-out;
+        }
+
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 30px;
+        }
+
+        .toast.hide {
+            visibility: hidden;
+            opacity: 0;
+            bottom: 0;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+    <title>Chat Website</title>
+</head>
+
+<body onload="initiateUser()">
+    <div class="chat-container">
+        <div class="chat-header">
+            <h3 id="chat_header_text">Chat Website</h3>
+            <button id="logout-btn">Logout</button>
+        </div>
+        <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'FriendList')">Friend List</button>
+            <button class="tablinks" onclick="openTab(event, 'PendingRequests')">Pending Requests</button>
+            <button class="tablinks" onclick="openTab(event, 'OpenConnections')">Open Connections</button>
+        </div>            
+
+        <div id="FriendList" class="tabcontent">
+            <div class="flex-container">
+                <div class="friends-list-container">
+                    <h3>Friends</h3>
+                    <ul id="friends-list"></ul>
+                </div>
+                <div id="div_connect_request">
+                    <p>&nbsp;&nbsp;&nbsp;GOBUZZ : Send connection request to join for the chat.&nbsp;&nbsp;&nbsp;</p>
+                    <form method="POST" id="email_request_form" action=""></form>
+                </div>                    
+            </div>                
+        </div>
+
+        <div id="PendingRequests" class="tabcontent">
+            <div class="flex-container">
+                <div class="friends-list-container">
+                    <h3>Received Requests</h3>
+                    <ul id="received-list"></ul>
+                </div>
+                <div id="div_connect_request">
+                    <p>&nbsp;&nbsp;&nbsp;GOBUZZ : Accept the connection request to chat.&nbsp;&nbsp;&nbsp;</p>
+                    <form method="POST" id="email_reply_form" action=""></form>
+                </div>                    
+            </div>
+        </div>
+
+        <div id="OpenConnections" class="tabcontent">
+            <div class="chat-container">
+                <div class="chat-content">
+                    <div class="flex-container">
+                        <div class="friends-list-container">
+                            <ul id="connections-list"></ul>
+                        </div>
+                        <div>
+                            <div class="online-chat-container">   
+                                <ul id="chat-msg"></ul>                     
+                                <div class="chat-content">
+                                    <div class="chat-input">
+                                        <input type="text" id="message-input" placeholder="Type a message..." aria-label="Message input" />
+                                        <button id="send">Send</button>
+                                    </div>
+                                    <div class="typing-indicator" id="typing-indicator"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">Your session has expired. Redirecting to login...</div>
+
+    <script>
+        var userData = {{ userData | tojson }};
+        console.log('User data username -------', userData.Username);
+        console.log('User data email -------', userData.Email);
+
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        // By default, open the Friend List tab
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelector('.tablinks').click();
+        });
+    </script>
+</body>
+</html>
