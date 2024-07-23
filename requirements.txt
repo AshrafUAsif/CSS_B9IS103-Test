@@ -1,6 +1,5 @@
 absl-py==2.1.0
 ansible==9.3.0
-ansible-base==2.10.8
 ansible-core==2.16.4
 apache-libcloud==3.2.0
 argcomplete==1.8.1
@@ -13,10 +12,13 @@ chardet==4.0.0
 click==8.1.7
 colorama==0.4.4
 cryptography==3.4.8
-Flask==3.0.2
+Flask==3.0.3
+authlib==1.0.0
 Flask-Bcrypt==1.0.1
 Flask-Login==0.6.3
 mysql-connector==2.2.9
 mysql-connector-python==8.3.0
 gunicorn==20.1.0
-authlib==1.0.0  # Add this line
+PyYAML>=5.1
+packaging>=24.1
+resolvelib<1.1.0,>=0.5.3
