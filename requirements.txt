@@ -22,3 +22,4 @@ gunicorn
 flask-session
 python-dotenv
 flask-socketio
+flask-mail
