@@ -7,7 +7,7 @@ from flask_bcrypt import Bcrypt, generate_password_hash, check_password_hash
 from authlib.integrations.flask_client import OAuth
 import mysql.connector
 import re
-from flask_socketio import SocketIO, emit, join_room, leave_room
+from flask_socketio import SocketIO, emit
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from flask_mail import Mail, Message
 from flask_session import Session
@@ -480,4 +480,4 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
-    socketio.run(app, host='0.0.0.0', port=int(os.environ.get('PORT', 8080)), debug=True)
+    socketio.run(app, host='0.0.0.0', port=8080, debug=True)

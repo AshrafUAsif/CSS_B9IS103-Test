@@ -119,7 +119,7 @@ class Database:
             if self.connection.is_connected():
                 print("Connected to MySQL database")
             else:
-                self.connection = None
+                selef.connection = None
         except Error as er:
             print(f"Error occurred while connecting to MySQL database: {er}")
             self.connection = None
